@@ -13,10 +13,7 @@ import com.fullcycle.admin.catalogo.domain.pagination.SearchQuery;
 import com.fullcycle.admin.catalogo.domain.pagination.Pagination;
 import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import com.fullcycle.admin.catalogo.infrastructure.api.CategoryAPI;
-import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryListResponse;
-import com.fullcycle.admin.catalogo.infrastructure.category.models.CategoryResponse;
-import com.fullcycle.admin.catalogo.infrastructure.category.models.CreateCategoryRequest;
-import com.fullcycle.admin.catalogo.infrastructure.category.models.UpdateCategoryRequest;
+import com.fullcycle.admin.catalogo.infrastructure.category.models.*;
 import com.fullcycle.admin.catalogo.infrastructure.category.presenters.CategoryApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,15 +64,18 @@ public class CategoryController implements CategoryAPI {
     }
 
     @Override
-    public Pagination<CategoryListResponse> listCategories(
+    public ResponseEntity<?> listCategories(
             final String search,
             final int page,
             final int perPage,
             final String sort,
             final String direction
     ) {
-        return listCategoriesUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+        final Pagination<CategoryListResponse> resposta = listCategoriesUseCase
+                .execute(new SearchQuery(page, perPage, search, sort, direction))
                 .map(CategoryApiPresenter::present);
+
+        return ResponseEntity.ok().body(resposta);
     }
 
     @Override

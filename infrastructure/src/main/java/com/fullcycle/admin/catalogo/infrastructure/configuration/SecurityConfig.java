@@ -16,6 +16,9 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.*;
 import java.util.function.Function;
@@ -37,9 +40,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> {
-                    csrf.disable();
-                })
+                .csrf( csrf -> csrf.disable() )
+                .cors( cors -> cors.configurationSource(corsConfigurationSource()) )
                 .authorizeHttpRequests(authorize -> {
                     authorize
                             .antMatchers("/cast_members*").hasAnyRole(ROLE_ADMIN, ROLE_CAST_MEMBERS)
@@ -60,6 +62,19 @@ public class SecurityConfig {
                 })
                 .build();
     }
+
+     @Bean
+     CorsConfigurationSource corsConfigurationSource() {
+         CorsConfiguration config = new CorsConfiguration();
+         config.setAllowedOrigins(Arrays.asList("*"));
+         config.setAllowedMethods(Arrays.asList("*"));
+         config.setAllowedHeaders(Arrays.asList("*"));
+         config.setAllowCredentials(false);
+         config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+         source.registerCorsConfiguration("/**", config);
+         return source;
+     }
 
     static class KeycloakJwtConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 

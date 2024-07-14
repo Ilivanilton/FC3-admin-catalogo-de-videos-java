@@ -5,6 +5,9 @@ import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 
 import java.time.Instant;
 
+/**
+ * Filtra quais campos ir'a ser visualisada pelo cliente. Penas o campo updateAt n foi mostrado!
+ */
 public record CategoryListOutput(
         CategoryID id,
         String name,

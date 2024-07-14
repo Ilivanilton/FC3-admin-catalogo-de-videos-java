@@ -57,7 +57,8 @@ public class CategoryController implements CategoryAPI {
                 ResponseEntity.unprocessableEntity().body(notification);
 
         final Function<CreateCategoryOutput, ResponseEntity<?>> onSuccess = output ->
-                ResponseEntity.created(URI.create("/categories/" + output.id())).body(output);
+                ResponseEntity.created(URI.create("/categories/" + output.id()))
+                    .body(CategoryApiPresenter.present(output));
 
         return this.createCategoryUseCase.execute(aCommand)
                 .fold(onError, onSuccess);

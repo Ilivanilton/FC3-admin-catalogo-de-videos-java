@@ -26,7 +26,11 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
+//    RequestBody => POST localhost:8080/books/
     ResponseEntity<?> createCategory(@RequestBody CreateCategoryRequest input);
+//    @PathVariable is for parts of the path (i.e. /person/{id})
+//    @RequestParam is for the GET query parameters (i.e. /person?name="Bob").
+//    @RequestBody is for the actual body of a request.
 
     @GetMapping
     @Operation(summary = "List all categories paginated")
@@ -35,6 +39,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "422", description = "A invalid parameter was received"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
+//    RequestParam => localhost:8080/books?author=georgemartin
     ResponseEntity<?> listCategories(
             @RequestParam(name = "search", required = false, defaultValue = "") final String search,
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
@@ -53,6 +58,7 @@ public interface CategoryAPI {
             @ApiResponse(responseCode = "404", description = "Category was not found"),
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
+//    PathVariable => GET localhost:8080/books/1
     CategoryResponse getById(@PathVariable(name = "id") String id);
 
     @PutMapping(

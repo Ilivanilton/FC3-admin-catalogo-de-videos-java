@@ -73,7 +73,7 @@ public class Genre extends AggregateRoot<GenreID> {
 
     @Override
     public void validate(final ValidationHandler handler) {
-        new GenreValidator(this, handler).validate();
+        GenreValidator.of(this, handler).validate();
     }
 
     public Genre update(final String aName, final boolean isActive, final List<CategoryID> categories) {

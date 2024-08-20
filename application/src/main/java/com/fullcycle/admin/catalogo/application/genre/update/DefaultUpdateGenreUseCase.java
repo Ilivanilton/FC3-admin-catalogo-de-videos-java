@@ -4,6 +4,7 @@ import com.fullcycle.admin.catalogo.domain.Identifier;
 import com.fullcycle.admin.catalogo.domain.category.CategoryGateway;
 import com.fullcycle.admin.catalogo.domain.category.CategoryID;
 import com.fullcycle.admin.catalogo.domain.exceptions.DomainException;
+import com.fullcycle.admin.catalogo.domain.exceptions.NoStacktraceException;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotFoundException;
 import com.fullcycle.admin.catalogo.domain.exceptions.NotificationException;
 import com.fullcycle.admin.catalogo.domain.genre.Genre;
@@ -16,6 +17,7 @@ import com.fullcycle.admin.catalogo.domain.validation.handler.Notification;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -47,6 +49,10 @@ public class DefaultUpdateGenreUseCase extends UpdateGenreUseCase {
         notification.validate(() -> aGenre.update(aName, isActive, categories));
 
         if (notification.hasError()) {
+//            throw new Exception("sdfsdf");
+//            throw new RuntimeException("um error person");
+//            throw new NoStacktraceException("NoStacktraceException");
+//            throw DomainException.with(new Error("DomainException.with"));
             throw new NotificationException(
                     "Could not update Aggregate Genre %s".formatted(aCommand.id()), notification
             );

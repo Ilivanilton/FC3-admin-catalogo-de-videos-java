@@ -16,6 +16,10 @@ public class GenreValidator extends Validator {
         this.genre = aGenre;
     }
 
+    public static GenreValidator of(final Genre aGenre, final ValidationHandler aHandler) {
+        return new GenreValidator(aGenre, aHandler);
+    }
+
     @Override
     public void validate() {
         checkNameConstraints();

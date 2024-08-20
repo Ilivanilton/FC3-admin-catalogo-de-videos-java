@@ -24,6 +24,7 @@ public interface ValidationHandler {
         }
     }
 
+    @FunctionalInterface
     interface Validation<T> {
         T validate();
     }

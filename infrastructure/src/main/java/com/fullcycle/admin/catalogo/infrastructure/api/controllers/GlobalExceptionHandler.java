@@ -23,6 +23,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.unprocessableEntity().body(ApiError.from(ex));
     }
 
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(final RuntimeException ex) {
+
+        return ResponseEntity.unprocessableEntity().body(ApiRuntimeError.from(ex));
+    }
+
+    record ApiRuntimeError(String msg){
+        static ApiRuntimeError from(RuntimeException ex) {
+            return new ApiRuntimeError(ex.getMessage());
+        }
+    }
+
     record ApiError(String message, List<Error> errors) {
         static ApiError from(final DomainException ex) {
             return new ApiError(ex.getMessage(), ex.getErrors());

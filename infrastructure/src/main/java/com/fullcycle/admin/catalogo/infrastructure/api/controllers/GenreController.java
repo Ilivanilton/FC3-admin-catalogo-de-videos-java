@@ -14,6 +14,7 @@ import com.fullcycle.admin.catalogo.infrastructure.genre.models.CreateGenreReque
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.GenreListResponse;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.GenreResponse;
 import com.fullcycle.admin.catalogo.infrastructure.genre.models.UpdateGenreRequest;
+import com.fullcycle.admin.catalogo.infrastructure.genre.presenters.GenreApiCustomPrensenter;
 import com.fullcycle.admin.catalogo.infrastructure.genre.presenters.GenreApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,15 +58,16 @@ public class GenreController implements GenreAPI {
     }
 
     @Override
-    public Pagination<GenreListResponse> list(
+    public ResponseEntity<?> list(
             final String search,
             final int page,
             final int perPage,
             final String sort,
             final String direction
     ) {
-        return this.listGenreUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
+        final var r = this.listGenreUseCase.execute(new SearchQuery(page, perPage, search, sort, direction))
                 .map(GenreApiPresenter::present);
+        return ResponseEntity.ok().body(GenreApiCustomPrensenter.present(r));
     }
 
     @Override
